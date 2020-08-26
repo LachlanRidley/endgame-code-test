@@ -95,13 +95,35 @@ function drawTable() {
 }
 
 function cell(cellReference) {
-    var letterComponent = cellReference.charAt(0);
-    var numberComponent = cellReference.charAt(1);
+    let index = 0;
 
-    var col = alphabet.findIndex(function(letter) {
-        return letter === letterComponent;
-    });
+    var letterComponent = '';
+    while (index < cellReference.length) {
+        if (cellReference.charAt(index).match(/^[a-zA-Z]+$/)) {
+            letterComponent += cellReference.charAt(index).toUpperCase();
+        } else {
+            break;
+        }
 
+        index++;
+    }
+
+    let col = 0;
+
+    if (letterComponent.length === 1) {
+        col = alphabet.findIndex(function(letter) {
+            return letter === letterComponent;
+        });
+    } else {
+        col = (alphabet.findIndex(function(letter) {
+            return letter === letterComponent[0];
+        }) + 1) * 26;
+        col += alphabet.findIndex(function(letter) {
+            return letter === letterComponent[1];
+        });
+    }
+
+    var numberComponent = cellReference.substring(index);
     var row = parseInt(numberComponent) - 1;
 
     return data[col][row];
