@@ -2,3 +2,8 @@
 - [x] draw table grid
 - [x] display content from data in table
 - [x] add labels to table
+- [x] allow editing cells and storing in data object
+- [ ] add a refresh button that redraws the table
+- [ ] add formula support
+- [ ] add function support
+- [ ] add support for formatting
