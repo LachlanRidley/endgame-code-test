@@ -38,6 +38,13 @@ setCellValue(3, 5, "=B2/C2");
 setCellValue(3, 6, "=C2%B2");
 setCellValue(3, 7, "=SUM(D2:D7)");
 
+setCellValue(6, 1, 1);
+setCellValue(7, 1, 2);
+setCellValue(6, 2, 3);
+setCellValue(7, 2, 4);
+setCellValue(6, 3, "=SUM(G2:H3)");
+setCellValue(7, 3, "=SUM(H3:G2)");
+
 setCellValue(99, 97, 4);
 setCellValue(99, 98, 5);
 setCellValue(99, 99, '=CV98+CV99');
@@ -162,7 +169,7 @@ function getCellValue(col, row) {
 }
 
 function evaluateCell(cellValue) {
-    if (cellValue.charAt(0) === '=') {
+    if (cellValue.toString().charAt(0) === '=') {
         if (cellValue.indexOf('(') !== -1) {
             return runFunction(cellValue);
         } else {
@@ -194,16 +201,11 @@ function getCellsInRange(range) {
     let [startCol, startRow] = getCellCoordinates(leftRef);
     let [endCol, endRow] = getCellCoordinates(rightRef);
 
-    let sum = 0;
-    while (startRow <= endRow) {
-        cells.push(data[startCol][startRow]);
-
-        startRow++;
+    for (let row = Math.min(startRow, endRow); row <= Math.max(startRow, endRow); row++) {
+        for (let col = Math.min(startCol, endCol); col <= Math.max(startCol, endCol); col++) {    
+            cells.push(data[col][row])
+        }
     }
-
-
-    // TODO horizontal range
-    // TODO square range
 
     return cells;
 }
