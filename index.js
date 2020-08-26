@@ -36,6 +36,7 @@ setCellValue(3, 3, "=B2-C2");
 setCellValue(3, 4, "=B2*C2");
 setCellValue(3, 5, "=B2/C2");
 setCellValue(3, 6, "=C2%B2");
+setCellValue(3, 7, "=SUM(D2:D7)");
 
 setCellValue(99, 97, 4);
 setCellValue(99, 98, 5);
@@ -99,6 +100,12 @@ function drawTable() {
 }
 
 function cell(cellReference) {
+    const [col, row] = getCellCoordinates(cellReference);
+
+    return data[col][row];
+}
+
+function getCellCoordinates(cellReference) {
     let index = 0;
 
     var letterComponent = '';
@@ -130,7 +137,7 @@ function cell(cellReference) {
     var numberComponent = cellReference.substring(index);
     var row = parseInt(numberComponent) - 1;
 
-    return data[col][row];
+    return [col, row];
 }
 
 function setCellValue(col, row, value) {
@@ -148,17 +155,54 @@ function getCellValue(col, row) {
     var cellValue = data[col][row].value.toString();
 
     if (cellValue.charAt(0) === '=') {
-        cellValue = calculateFormula(cellValue.toString());   
+        cellValue = evaluateCell(cellValue.toString());   
     }
 
     return cellValue;
 }
 
-function calculateFormula(formula) {
-    if (formula.charAt(0) !== '=') {
-        return formula;
+function evaluateCell(cellValue) {
+    if (cellValue.charAt(0) === '=') {
+        if (cellValue.indexOf('(') !== -1) {
+            return runFunction(cellValue);
+        } else {
+            return calculateFormula(cellValue);
+        }
+    } else {
+        return cellValue;
     }
+}
 
+function runFunction(func) {
+    const functionName = func.substring(1, func.indexOf('('))
+    
+    if (functionName === "SUM") {
+        const range = func.substring(func.indexOf('(') + 1, func.indexOf(')'))
+
+        console.log({functionName, range});
+
+        const [leftRef, rightRef] = range.split(":");
+
+        // TODO vertical range
+        let [startCol, startRow] = getCellCoordinates(leftRef);
+        let [endCol, endRow] = getCellCoordinates(rightRef);
+
+        let sum = 0;
+        while (startRow <= endRow) {
+            sum += getCellValue(startCol, startRow);
+
+            startRow++;
+        }
+
+
+        // TODO horizontal range
+        // TODO square range
+
+        return sum;
+    }
+}
+
+function calculateFormula(formula) {
     var result;
 
     var index = 1;
@@ -187,12 +231,10 @@ function calculateFormula(formula) {
 
         index++;
     }
-    
-    console.log({leftCellReference, operator, rightCellReference});
 
     if (operator in formulas) {
-        var calculatedLeft = calculateFormula(cell(leftCellReference).value.toString());
-        var calculatedRight = calculateFormula(cell(rightCellReference).value.toString());
+        var calculatedLeft = evaluateCell(cell(leftCellReference).value.toString());
+        var calculatedRight = evaluateCell(cell(rightCellReference).value.toString());
 
         result = formulas[operator](calculatedLeft, calculatedRight);
     }
