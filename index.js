@@ -135,16 +135,38 @@ function calculateFormula(formula) {
 
     var result;
 
-    formulas.keys
+    var index = 1;
+    var leftCellReference = '';
+    while (index < formula.length) {
+        if (formula.charAt(index).match(/^[0-9a-zA-Z]+$/)) {
+            leftCellReference += formula.charAt(index).toUpperCase();
+        } else {
+            break;
+        }
 
-    var operator = formula.charAt(3);
+        index++;
+    }
+
+    var operator = formula.charAt(index);
+    
+    index++;
+    
+    var rightCellReference = '';
+    while (index < formula.length) {
+        if (formula.charAt(index).match(/^[0-9a-zA-Z]+$/)) {
+            rightCellReference += formula.charAt(index).toUpperCase();
+        } else {
+            break;
+        }
+
+        index++;
+    }
+    
+    console.log({leftCellReference, operator, rightCellReference});
 
     if (operator in formulas) {
-        var left = formula.substring(1, formula.indexOf(operator))
-        var right = formula.substring(formula.indexOf(operator) + 1)
-
-        var calculatedLeft = calculateFormula(cell(left).value.toString());
-        var calculatedRight = calculateFormula(cell(right).value.toString());
+        var calculatedLeft = calculateFormula(cell(leftCellReference).value.toString());
+        var calculatedRight = calculateFormula(cell(rightCellReference).value.toString());
 
         result = formulas[operator](calculatedLeft, calculatedRight);
     }
