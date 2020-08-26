@@ -56,12 +56,8 @@ function drawTable() {
             var nextCell = document.createElement("td");
             nextCell.dataset.col = col;
             nextCell.dataset.row = row;
-
             nextCell.onclick = handleCellClick;
-            
-            if (data[col][row]) {
-                nextCell.append(data[col][row].value);
-            }
+            nextCell.append(getCellValue(col, row));
             
             nextRow.appendChild(nextCell);
         }
@@ -77,6 +73,14 @@ function setCellValue(col, row, value) {
         data[col][row] = {}
     }
     data[col][row].value = value;
+}
+
+function getCellValue(col, row) {
+    if (data[col][row]) {
+        return data[col][row].value;
+    }
+
+    return '';
 }
 
 function columnLabel(count) {
