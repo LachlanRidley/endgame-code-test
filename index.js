@@ -5,25 +5,6 @@ var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 
 var data = []; // columns
 
-var formulas = {
-    '+': function(left, right) {
-        return parseInt(left) + parseInt(right);
-    },
-    '-': function(left, right) {
-        return parseInt(left) - parseInt(right);
-    },
-    '*': function(left, right) {
-        return parseInt(left) * parseInt(right);
-    },
-    '/': function(left, right) {
-        return parseInt(left) / parseInt(right);
-    }
-    ,
-    '%': function(left, right) {
-        return parseInt(left) % parseInt(right);
-    }
-}
-
 for (var col = 0; col < width; col++) {
     data[col] = []
 }
@@ -44,6 +25,7 @@ setCellValue(6, 2, 3);
 setCellValue(7, 2, 4);
 setCellValue(6, 3, "=SUM(G2:H3)");
 setCellValue(7, 3, "=SUM(H3:G2)");
+setCellValue(6, 4, "=AVERAGE(H3:G2)");
 
 setCellValue(99, 97, 4);
 setCellValue(99, 98, 5);
@@ -191,6 +173,14 @@ function runFunction(func) {
             (total, next) => total + parseFloat(evaluateCell(next.value)),
             parseFloat(evaluateCell(cells[0].value))
         );
+    } else if (functionName === "AVERAGE") {
+        const range = func.substring(func.indexOf('(') + 1, func.indexOf(')'))
+
+        const cells = getCellsInRange(range);
+        return cells.slice(1).reduce(
+            (total, next) => total + parseFloat(evaluateCell(next.value)),
+            parseFloat(evaluateCell(cells[0].value))
+        ) / cells.length;
     }
 }
 
@@ -211,6 +201,25 @@ function getCellsInRange(range) {
 }
 
 function calculateFormula(formula) {
+    const formulas = {
+        '+': function(left, right) {
+            return parseInt(left) + parseInt(right);
+        },
+        '-': function(left, right) {
+            return parseInt(left) - parseInt(right);
+        },
+        '*': function(left, right) {
+            return parseInt(left) * parseInt(right);
+        },
+        '/': function(left, right) {
+            return parseInt(left) / parseInt(right);
+        }
+        ,
+        '%': function(left, right) {
+            return parseInt(left) % parseInt(right);
+        }
+    }
+
     var result;
 
     var index = 1;
