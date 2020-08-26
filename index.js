@@ -18,6 +18,10 @@ function drawTable() {
     for (var row = 0; row < height; row++) {
         var nextRow = document.createElement("tr");
 
+        var rowLabel = document.createElement("th");
+        rowLabel.append(row + 1);
+        nextRow.appendChild(rowLabel);
+
         for (var col = 0; col < width; col++) {    
             var nextCell = document.createElement("td");
             
@@ -31,3 +35,4 @@ function drawTable() {
         table.appendChild(nextRow);
     }
 }
+
