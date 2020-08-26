@@ -1,4 +1,4 @@
 - [x] create index.html
 - [x] draw table grid
 - [x] display content from data in table
-- [ ] add labels to table
+- [x] add labels to table
