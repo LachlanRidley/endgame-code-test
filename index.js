@@ -179,27 +179,33 @@ function runFunction(func) {
     if (functionName === "SUM") {
         const range = func.substring(func.indexOf('(') + 1, func.indexOf(')'))
 
-        console.log({functionName, range});
-
-        const [leftRef, rightRef] = range.split(":");
-
-        // TODO vertical range
-        let [startCol, startRow] = getCellCoordinates(leftRef);
-        let [endCol, endRow] = getCellCoordinates(rightRef);
-
-        let sum = 0;
-        while (startRow <= endRow) {
-            sum += getCellValue(startCol, startRow);
-
-            startRow++;
-        }
-
-
-        // TODO horizontal range
-        // TODO square range
-
-        return sum;
+        const cells = getCellsInRange(range);
+        return cells.slice(1).reduce(
+            (total, next) => total + parseFloat(evaluateCell(next.value)),
+            parseFloat(evaluateCell(cells[0].value))
+        );
     }
+}
+
+function getCellsInRange(range) {
+    const [leftRef, rightRef] = range.split(":");
+    const cells = [];
+
+    let [startCol, startRow] = getCellCoordinates(leftRef);
+    let [endCol, endRow] = getCellCoordinates(rightRef);
+
+    let sum = 0;
+    while (startRow <= endRow) {
+        cells.push(data[startCol][startRow]);
+
+        startRow++;
+    }
+
+
+    // TODO horizontal range
+    // TODO square range
+
+    return cells;
 }
 
 function calculateFormula(formula) {
