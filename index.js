@@ -87,11 +87,19 @@ function setCellValue(col, row, value) {
 }
 
 function getCellValue(col, row) {
-    if (data[col][row]) {
-        return data[col][row].value;
+    if (!data[col][row]) {
+        return '';
     }
 
-    return '';
+    var cellValue = data[col][row].value;
+
+    if (cellValue.charAt(0) === '=') {
+        var cellReference = cellValue.substring(1);
+
+        cellValue = cell(cellReference).value;
+    }
+
+    return cellValue;
 }
 
 function columnLabel(count) {
