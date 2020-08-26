@@ -9,9 +9,6 @@ for (var col = 0; col < width; col++) {
     data[col] = []
 }
 
-data[3][4] = { value: 3 };
-data[4][4] = { value: 4 };
-
 setupRefreshButton();
 drawTable();
 
@@ -32,6 +29,7 @@ function clearTable() {
 function drawTable() {
     var table = document.getElementById("spreadsheet");
 
+    // create column headers
     var header = document.createElement("thead");
     header.appendChild(document.createElement("th"))
     for (var col = 0; col < width; col++) {
@@ -41,6 +39,7 @@ function drawTable() {
     }
     table.append(header)
 
+    // create table
     for (var row = 0; row < height; row++) {
         var nextRow = document.createElement("tr");
 
@@ -55,7 +54,7 @@ function drawTable() {
 
             nextCell.onclick = function(event) {
                 var cellValue = prompt("Enter cell value:");
-                data[event.target.dataset.col][event.target.dataset.col] = { value: cellValue };
+                setCellValue(event.target.dataset.col, event.target.dataset.col, cellValue);
             };
             
             if (data[col][row]) {
@@ -67,6 +66,13 @@ function drawTable() {
 
         table.appendChild(nextRow);
     }
+}
+
+function setCellValue(col, row, value) {
+    if (!data[col][row]) {
+        data[col][row] = {}
+    }
+    data[col][row].value = value;
 }
 
 function columnLabel(count) {
