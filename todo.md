@@ -1,1 +1,3 @@
 - [x] create index.html
+- [ ] draw table grid
+- [ ] add labels to table
