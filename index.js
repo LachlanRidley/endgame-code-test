@@ -36,3 +36,18 @@ function drawTable() {
     }
 }
 
+var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+function columnLabel(count) {
+    var firstLetter = '';
+    var firstLetterIndex = Math.floor(count / 26);
+
+    if (firstLetterIndex > 0) {
+        firstLetter = alphabet[firstLetterIndex - 1];
+    }
+
+    var secondLetterIndex = count % alphabet.length;
+    var secondLetter = alphabet[secondLetterIndex]
+
+    return firstLetter + secondLetter;
+}
