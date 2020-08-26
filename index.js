@@ -7,7 +7,7 @@ var data = []; // columns
 
 var formulas = {
     '+': function(left, right) {
-        return left + right;
+        return parseInt(left) + parseInt(right);
     }
 }
 
@@ -104,21 +104,30 @@ function getCellValue(col, row) {
     var cellValue = data[col][row].value.toString();
 
     if (cellValue.charAt(0) === '=') {
-        var cellReference = cellValue.substring(1);
-
-        if (cellValue.includes('+')) {
-            var left = cellValue.substring(1, cellValue.indexOf('+'))
-            var right = cellValue.substring(cellValue.indexOf('+') + 1)
-            
-            console.log({left, right})
-
-            cellValue = cell(cellReference).value;
-
-            cellValue = formulas['+'](cell(left).value, cell(right).value);
-        }        
+        cellValue = calculateFormula(cellValue.toString());   
     }
 
     return cellValue;
+}
+
+function calculateFormula(formula) {
+    if (formula.charAt(0) !== '=') {
+        return formula;
+    }
+
+    var result;
+
+    if (formula.includes('+')) {
+        var left = formula.substring(1, formula.indexOf('+'))
+        var right = formula.substring(formula.indexOf('+') + 1)
+
+        var calculatedLeft = calculateFormula(cell(left).value.toString());
+        var calculatedRight = calculateFormula(cell(right).value.toString());
+
+        result = formulas['+'](calculatedLeft, calculatedRight);
+    }
+
+    return result;
 }
 
 function columnLabel(count) {
