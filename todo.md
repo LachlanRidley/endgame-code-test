@@ -4,10 +4,10 @@
 - [x] add labels to table
 - [x] allow editing cells and storing in data object
 - [x] add a refresh button that redraws the table
-- [ ] add formula support
+- [x] add formula support
     - [x] be able to get the value of a cell based on it's two headers
     - [x] be able to calculate the formula and return the value (using getCellValue)
-    - [ ] find operator rather than just hoping it's at 3
-    - [ ] support for cell references with length > 2
+    - [x] find operator rather than just hoping it's at 3
+    - [x] support for cell references with length > 2
 - [ ] add function support
 - [ ] add support for formatting
