@@ -5,9 +5,19 @@ var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 
 var data = []; // columns
 
+var formulas = {
+    '+': function(left, right) {
+        return left + right;
+    }
+}
+
 for (var col = 0; col < width; col++) {
     data[col] = []
 }
+
+setCellValue(1, 1, 2);
+setCellValue(2, 1, 3);
+setCellValue(3, 1, "=B2+C2");
 
 setupRefreshButton();
 drawTable();
@@ -91,12 +101,21 @@ function getCellValue(col, row) {
         return '';
     }
 
-    var cellValue = data[col][row].value;
+    var cellValue = data[col][row].value.toString();
 
     if (cellValue.charAt(0) === '=') {
         var cellReference = cellValue.substring(1);
 
-        cellValue = cell(cellReference).value;
+        if (cellValue.includes('+')) {
+            var left = cellValue.substring(1, cellValue.indexOf('+'))
+            var right = cellValue.substring(cellValue.indexOf('+') + 1)
+            
+            console.log({left, right})
+
+            cellValue = cell(cellReference).value;
+
+            cellValue = formulas['+'](cell(left).value, cell(right).value);
+        }        
     }
 
     return cellValue;
