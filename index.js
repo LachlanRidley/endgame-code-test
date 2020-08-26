@@ -8,6 +8,19 @@ var data = []; // columns
 var formulas = {
     '+': function(left, right) {
         return parseInt(left) + parseInt(right);
+    },
+    '-': function(left, right) {
+        return parseInt(left) - parseInt(right);
+    },
+    '*': function(left, right) {
+        return parseInt(left) * parseInt(right);
+    },
+    '/': function(left, right) {
+        return parseInt(left) / parseInt(right);
+    }
+    ,
+    '%': function(left, right) {
+        return parseInt(left) % parseInt(right);
     }
 }
 
@@ -18,6 +31,11 @@ for (var col = 0; col < width; col++) {
 setCellValue(1, 1, 2);
 setCellValue(2, 1, 3);
 setCellValue(3, 1, "=B2+C2");
+setCellValue(3, 2, "=C2+D2");
+setCellValue(3, 3, "=B2-C2");
+setCellValue(3, 4, "=B2*C2");
+setCellValue(3, 5, "=B2/C2");
+setCellValue(3, 6, "=C2%B2");
 
 setupRefreshButton();
 drawTable();
@@ -117,14 +135,18 @@ function calculateFormula(formula) {
 
     var result;
 
-    if (formula.includes('+')) {
-        var left = formula.substring(1, formula.indexOf('+'))
-        var right = formula.substring(formula.indexOf('+') + 1)
+    formulas.keys
+
+    var operator = formula.charAt(3);
+
+    if (operator in formulas) {
+        var left = formula.substring(1, formula.indexOf(operator))
+        var right = formula.substring(formula.indexOf(operator) + 1)
 
         var calculatedLeft = calculateFormula(cell(left).value.toString());
         var calculatedRight = calculateFormula(cell(right).value.toString());
 
-        result = formulas['+'](calculatedLeft, calculatedRight);
+        result = formulas[operator](calculatedLeft, calculatedRight);
     }
 
     return result;
