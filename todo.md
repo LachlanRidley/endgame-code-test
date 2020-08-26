@@ -5,5 +5,7 @@
 - [x] allow editing cells and storing in data object
 - [x] add a refresh button that redraws the table
 - [ ] add formula support
+    - [ ] be able to get the value of a cell based on it's two headers
+    - [ ] be able to calculate the formula and return the value (using getCellValue)
 - [ ] add function support
 - [ ] add support for formatting

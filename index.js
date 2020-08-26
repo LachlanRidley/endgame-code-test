@@ -66,7 +66,18 @@ function drawTable() {
     }
 }
 
+function cell(cellReference) {
+    var letterComponent = cellReference.charAt(0);
+    var numberComponent = cellReference.charAt(1);
 
+    var col = alphabet.findIndex(function(letter) {
+        return letter === letterComponent;
+    });
+
+    var row = parseInt(numberComponent) - 1;
+
+    return data[col][row];
+}
 
 function setCellValue(col, row, value) {
     if (!data[col][row]) {
