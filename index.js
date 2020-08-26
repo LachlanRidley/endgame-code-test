@@ -7,19 +7,24 @@ for (var col = 0; col < width; col++) {
     data[col] = []
 }
 
-data[4][4] = 4;
+data[3][4] = { value: 3 };
+data[4][4] = { value: 4 };
 
 drawTable();
 
 function drawTable() {
     var table = document.getElementById("spreadsheet");
 
-    for (var col = 0; col < width; col++) {
+    for (var row = 0; row < height; row++) {
         var nextRow = document.createElement("tr");
-        
-        for (var row = 0; row < height; row++) {
+
+        for (var col = 0; col < width; col++) {    
             var nextCell = document.createElement("td");
-            nextCell.append("Hello world!");
+            
+            if (data[col][row]) {
+                nextCell.append(data[col][row].value);
+            }
+            
             nextRow.appendChild(nextCell);
         }
 
