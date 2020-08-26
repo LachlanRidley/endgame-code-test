@@ -37,6 +37,10 @@ setCellValue(3, 4, "=B2*C2");
 setCellValue(3, 5, "=B2/C2");
 setCellValue(3, 6, "=C2%B2");
 
+setCellValue(99, 97, 4);
+setCellValue(99, 98, 5);
+setCellValue(99, 99, '=CV98+CV99');
+
 setupRefreshButton();
 drawTable();
 
