@@ -12,7 +12,22 @@ for (var col = 0; col < width; col++) {
 data[3][4] = { value: 3 };
 data[4][4] = { value: 4 };
 
+setupRefreshButton();
 drawTable();
+
+function setupRefreshButton() {
+    var refreshButton = document.getElementById("refresh-button");
+
+    refreshButton.onclick = function() {
+        clearTable();
+        drawTable();
+    }
+}
+
+function clearTable() {
+    var table = document.getElementById("spreadsheet");
+    table.innerHTML = '';
+}
 
 function drawTable() {
     var table = document.getElementById("spreadsheet");
@@ -40,7 +55,7 @@ function drawTable() {
 
             nextCell.onclick = function(event) {
                 var cellValue = prompt("Enter cell value:");
-                data[event.target.dataset.col][event.target.dataset.col] = cellValue;
+                data[event.target.dataset.col][event.target.dataset.col] = { value: cellValue };
             };
             
             if (data[col][row]) {
