@@ -26,6 +26,11 @@ function clearTable() {
     table.innerHTML = '';
 }
 
+function handleCellClick(event) {
+    var cellValue = prompt("Enter cell value:");
+    setCellValue(event.target.dataset.col, event.target.dataset.row, cellValue);
+};
+
 function drawTable() {
     var table = document.getElementById("spreadsheet");
 
@@ -52,10 +57,7 @@ function drawTable() {
             nextCell.dataset.col = col;
             nextCell.dataset.row = row;
 
-            nextCell.onclick = function(event) {
-                var cellValue = prompt("Enter cell value:");
-                setCellValue(event.target.dataset.col, event.target.dataset.col, cellValue);
-            };
+            nextCell.onclick = handleCellClick;
             
             if (data[col][row]) {
                 nextCell.append(data[col][row].value);
@@ -67,6 +69,8 @@ function drawTable() {
         table.appendChild(nextRow);
     }
 }
+
+
 
 function setCellValue(col, row, value) {
     if (!data[col][row]) {
