@@ -38,125 +38,11 @@ for (let col = 0; col < width; col++) {
 
 let selectedCell = null;
 
-document.getElementById("value-input").onblur = function () {
-  const newValue = event.target.value;
-
-  setCellValue(selectedCell.col, selectedCell.row, newValue);
-};
-
-document.getElementById("bold-check").onchange = function () {
-  ensureCellHasOptions(selectedCell.col, selectedCell.row);
-  data[selectedCell.col][selectedCell.row].options.bold = event.target.checked;
-};
-
-document.getElementById("italics-check").onchange = function () {
-  ensureCellHasOptions(selectedCell.col, selectedCell.row);
-  data[selectedCell.col][selectedCell.row].options.italics =
-    event.target.checked;
-};
-
-document.getElementById("underline-check").onchange = function () {
-  ensureCellHasOptions(selectedCell.col, selectedCell.row);
-  data[selectedCell.col][selectedCell.row].options.underline =
-    event.target.checked;
-};
-
-document.getElementById("font-color-picker").onchange = function () {
-  const color = event.target.value;
-
-  ensureCellHasOptions(selectedCell.col, selectedCell.row);
-  data[selectedCell.col][selectedCell.row].options.fontColor = color;
-};
-
-document.getElementById("background-color-picker").onchange = function () {
-  const color = event.target.value;
-
-  ensureCellHasOptions(selectedCell.col, selectedCell.row);
-  data[selectedCell.col][selectedCell.row].options.backgroundColor = color;
-};
-
-function ensureCellHasOptions(col, row) {
-  if (!data[selectedCell.col][selectedCell.row].options) {
-    data[selectedCell.col][selectedCell.row].options = {};
-  }
-}
-
-setupRefreshButton();
+setUpEvents();
 drawTable();
-
-function setupRefreshButton() {
-  document.getElementById("refresh-button").onclick = function () {
-    clearTable();
-    drawTable();
-  };
-}
-
-function handleCellClick(event) {
-  const col = event.target.dataset.col;
-  const row = event.target.dataset.row;
-  const cell = data[col][row];
-
-  deselectCell();
-
-  selectedCell = {
-    col: col,
-    row: row,
-  };
-
-  if (cell) {
-    document.getElementById("value-input").value = cell.value;
-
-    if (cell.options) {
-      setOptions(cell.options);
-    }
-  }
-
-  document.getElementById("value-input").focus();
-  event.target.classList.add("selected");
-  document.getElementById("format-controls").style.display = "inline";
-}
 
 function clearTable() {
   document.getElementById("spreadsheet").innerHTML = "";
-}
-
-function setOptions(options) {
-  document.getElementById("bold-check").checked = options.bold
-    ? options.bold
-    : false;
-
-  document.getElementById("italics-check").checked = options.italics
-    ? options.italics
-    : false;
-
-  document.getElementById("underline-check").checked = options.underline
-    ? options.underline
-    : false;
-
-  document.getElementById("font-color-picker").value = options.fontColor
-    ? options.fontColor
-    : "#000000";
-
-  document.getElementById(
-    "background-color-picker"
-  ).value = options.backgroundColor ? options.backgroundColor : "#FFFFFF";
-}
-
-function deselectCell() {
-  Array.from(document.getElementsByClassName("selected")).forEach((cell) =>
-    cell.classList.remove("selected")
-  );
-
-  selectedCell = null;
-  document.getElementById("value-input").value = "";
-  setOptions({
-    bold: false,
-    italics: false,
-    underline: false,
-    fontColor: "#000000",
-    backgroundColor: "#FFFFFF",
-  });
-  document.getElementById("format-controls").style.display = "none";
 }
 
 function drawTable() {
@@ -216,6 +102,115 @@ function drawTable() {
   }
 }
 
+function setUpEvents() {
+  document.getElementById("refresh-button").onclick = function () {
+    clearTable();
+    drawTable();
+  };
+
+  document.getElementById("value-input").onblur = function () {
+    const newValue = event.target.value;
+
+    setCellValue(selectedCell.col, selectedCell.row, newValue);
+  };
+
+  document.getElementById("bold-check").onchange = function () {
+    ensureCellHasOptions(selectedCell.col, selectedCell.row);
+    data[selectedCell.col][selectedCell.row].options.bold =
+      event.target.checked;
+  };
+
+  document.getElementById("italics-check").onchange = function () {
+    ensureCellHasOptions(selectedCell.col, selectedCell.row);
+    data[selectedCell.col][selectedCell.row].options.italics =
+      event.target.checked;
+  };
+
+  document.getElementById("underline-check").onchange = function () {
+    ensureCellHasOptions(selectedCell.col, selectedCell.row);
+    data[selectedCell.col][selectedCell.row].options.underline =
+      event.target.checked;
+  };
+
+  document.getElementById("font-color-picker").onchange = function () {
+    const color = event.target.value;
+
+    ensureCellHasOptions(selectedCell.col, selectedCell.row);
+    data[selectedCell.col][selectedCell.row].options.fontColor = color;
+  };
+
+  document.getElementById("background-color-picker").onchange = function () {
+    const color = event.target.value;
+
+    ensureCellHasOptions(selectedCell.col, selectedCell.row);
+    data[selectedCell.col][selectedCell.row].options.backgroundColor = color;
+  };
+}
+
+function handleCellClick(event) {
+  const col = event.target.dataset.col;
+  const row = event.target.dataset.row;
+  const cell = data[col][row];
+
+  deselectCell();
+
+  selectedCell = {
+    col: col,
+    row: row,
+  };
+
+  if (cell) {
+    document.getElementById("value-input").value = cell.value;
+
+    if (cell.options) {
+      setOptions(cell.options);
+    }
+  }
+
+  document.getElementById("value-input").focus();
+  event.target.classList.add("selected");
+  document.getElementById("format-controls").style.display = "inline";
+}
+
+function deselectCell() {
+  Array.from(document.getElementsByClassName("selected")).forEach((cell) =>
+    cell.classList.remove("selected")
+  );
+
+  selectedCell = null;
+  document.getElementById("value-input").value = "";
+  setOptions({
+    bold: false,
+    italics: false,
+    underline: false,
+    fontColor: "#000000",
+    backgroundColor: "#FFFFFF",
+  });
+  document.getElementById("format-controls").style.display = "none";
+}
+
+function setOptions(options) {
+  document.getElementById("bold-check").checked = options.bold
+    ? options.bold
+    : false;
+
+  document.getElementById("italics-check").checked = options.italics
+    ? options.italics
+    : false;
+
+  document.getElementById("underline-check").checked = options.underline
+    ? options.underline
+    : false;
+
+  document.getElementById("font-color-picker").value = options.fontColor
+    ? options.fontColor
+    : "#000000";
+
+  document.getElementById(
+    "background-color-picker"
+  ).value = options.backgroundColor ? options.backgroundColor : "#FFFFFF";
+}
+
 function cell(cellReference) {
   const [col, row] = getCellCoordinates(cellReference);
 
@@ -260,17 +255,6 @@ function getCellCoordinates(cellReference) {
   return [col, row];
 }
 
-function setCellValue(col, row, value, options) {
-  if (!data[col][row]) {
-    data[col][row] = {};
-  }
-  data[col][row].value = value;
-
-  if (options) {
-    data[col][row].options = options;
-  }
-}
-
 function getCellValue(col, row) {
   if (!data[col][row]) {
     return "";
@@ -283,6 +267,23 @@ function getCellValue(col, row) {
   }
 
   return cellValue;
+}
+
+function setCellValue(col, row, value, options) {
+  if (!data[col][row]) {
+    data[col][row] = {};
+  }
+  data[col][row].value = value;
+
+  if (options) {
+    data[col][row].options = options;
+  }
+}
+
+function ensureCellHasOptions(col, row) {
+  if (!data[selectedCell.col][selectedCell.row].options) {
+    data[selectedCell.col][selectedCell.row].options = {};
+  }
 }
 
 function evaluateCell(cellValue) {
