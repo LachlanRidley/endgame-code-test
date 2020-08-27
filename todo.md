@@ -11,10 +11,9 @@
   - [x] support for cell references with length > 2
 - [x] add function support
 - [x] add support for formatting
-- [ ] replace prompt with input
-  - [ ] focus input when selecting
-  - [ ] remove prompt
+- [x] replace prompt with input
+  - [x] focus input when selecting
+  - [x] remove prompt
 - [ ] make bold a toggle
 - [ ] add italics
 - [ ] add underlining
-- [ ] add auto refresh checkbox

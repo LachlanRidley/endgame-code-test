@@ -1,7 +1,7 @@
-var width = 100;
-var height = 100;
+const width = 100;
+const height = 100;
 
-var alphabet = [
+const alphabet = [
   "A",
   "B",
   "C",
@@ -72,8 +72,6 @@ document.getElementById("value-input").onblur = function () {
   const newValue = event.target.value;
 
   setCellValue(selectedCell.col, selectedCell.row, newValue);
-
-  event.target.value = "";
 };
 
 document.getElementById("bold-button").onclick = function () {
@@ -117,18 +115,33 @@ function handleCellClick(event) {
   const col = event.target.dataset.col;
   const row = event.target.dataset.row;
   const cell = data[col][row];
-  const defaultValue = cell ? cell.value : "";
 
-  const cellValue = prompt("Enter cell value:", defaultValue);
-
-  setCellValue(col, row, cellValue);
+  if (selectedCell) {
+    document.getElementsByClassName("selected")[0].classList.remove("selected");
+  }
 
   selectedCell = {
     col: col,
     row: row,
   };
 
-  document.getElementById("value-input").value = cellValue;
+  if (cell) {
+    document.getElementById("value-input").value = cell.value;
+
+    if (cell.options) {
+      document.getElementById("font-color-picker").value = cell.options
+        .fontColor
+        ? cell.options.fontColor
+        : "#000000";
+
+      document.getElementById("background-color-picker").value = cell.options
+        .backgroundColor
+        ? cell.options.backgroundColor
+        : "#FFFFFF";
+    }
+  }
+
+  document.getElementById("value-input").focus();
   event.target.classList.add("selected");
 }
 
@@ -138,10 +151,12 @@ function clearTable() {
 }
 
 function drawTable() {
-  var table = document.getElementById("spreadsheet");
+  selectedCell = null;
+
+  const table = document.getElementById("spreadsheet");
 
   // create column headers
-  var header = document.createElement("thead");
+  const header = document.createElement("thead");
   header.appendChild(document.createElement("th"));
   for (var col = 0; col < width; col++) {
     var headerCell = document.createElement("th");
