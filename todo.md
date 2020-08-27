@@ -12,4 +12,6 @@
 - [x] add function support
 - [x] add support for formatting
 - [ ] replace prompt with input
+- [ ] add italics
+- [ ] add underlining
 - [ ] add auto refresh checkbox

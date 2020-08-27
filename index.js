@@ -62,6 +62,14 @@ setCellValue(99, 99, "=CV98+CV99");
 
 let selectedCell = null;
 
+document.getElementById("value-input").onblur = function () {
+  const newValue = event.target.value;
+
+  setCellValue(selectedCell.col, selectedCell.row, newValue);
+
+  event.target.value = "";
+};
+
 document.getElementById("bold-button").onclick = function () {
   if (!data[selectedCell.col][selectedCell.row].options) {
     data[selectedCell.col][selectedCell.row].options = {};
@@ -114,6 +122,7 @@ function handleCellClick(event) {
     row: row,
   };
 
+  document.getElementById("value-input").value = cellValue;
   event.target.classList.add("selected");
 }
 
