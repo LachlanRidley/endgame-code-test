@@ -57,6 +57,7 @@ setCellValue(6, 4, "=AVERAGE(H3:G2)");
 setCellValue(10, 1, 123, { bold: true });
 setCellValue(11, 1, 123, { italics: true });
 setCellValue(12, 1, 123, { underline: true });
+setCellValue(12, 0, 123, { bold: true, italics: true, underline: true });
 
 setCellValue(10, 2, 123, { fontColor: "#EF8A17" });
 setCellValue(11, 2, 123, { backgroundColor: "#008148" });
@@ -74,9 +75,9 @@ document.getElementById("value-input").onblur = function () {
   setCellValue(selectedCell.col, selectedCell.row, newValue);
 };
 
-document.getElementById("bold-button").onclick = function () {
+document.getElementById("bold-check").onchange = function () {
   ensureCellHasOptions(selectedCell.col, selectedCell.row);
-  data[selectedCell.col][selectedCell.row].options.bold = true;
+  data[selectedCell.col][selectedCell.row].options.bold = event.target.checked;
 };
 
 document.getElementById("font-color-picker").onchange = function () {
@@ -129,6 +130,19 @@ function handleCellClick(event) {
     document.getElementById("value-input").value = cell.value;
 
     if (cell.options) {
+      document.getElementById("bold-check").checked = cell.options.bold
+        ? cell.options.bold
+        : false;
+
+      document.getElementById("italics-check").checked = cell.options.italics
+        ? cell.options.italics
+        : false;
+
+      document.getElementById("underline-check").checked = cell.options
+        .underline
+        ? cell.options.underline
+        : false;
+
       document.getElementById("font-color-picker").value = cell.options
         .fontColor
         ? cell.options.fontColor
@@ -185,6 +199,12 @@ function drawTable() {
       if (cellData && cellData.options) {
         if (cellData.options.bold) {
           nextCell.classList.add("bold");
+        }
+        if (cellData.options.italics) {
+          nextCell.classList.add("italics");
+        }
+        if (cellData.options.underline) {
+          nextCell.classList.add("underline");
         }
         if (cellData.options.fontColor) {
           nextCell.style.color = cellData.options.fontColor;

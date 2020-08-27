@@ -14,6 +14,9 @@
 - [x] replace prompt with input
   - [x] focus input when selecting
   - [x] remove prompt
-- [ ] make bold a toggle
-- [ ] add italics
-- [ ] add underlining
+- [x] make bold a toggle
+- [x] add italics
+- [x] add underlining
+- [ ] improve deselect behaviour (doesn't fully deselect when refreshing)
+- [ ] hide formatting controls when no cell is selected
+- [ ] only add test data after clicking a button
