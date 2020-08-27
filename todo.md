@@ -18,5 +18,5 @@
 - [x] add italics
 - [x] add underlining
 - [x] improve deselect behaviour (doesn't fully deselect when refreshing)
-- [ ] hide formatting controls when no cell is selected
-- [ ] only add test data after clicking a button
+- [x] hide formatting controls when no cell is selected
+- [x] move test data into addTestData() function (which can be called from the console)

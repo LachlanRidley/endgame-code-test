@@ -98,9 +98,7 @@ function handleCellClick(event) {
   const row = event.target.dataset.row;
   const cell = data[col][row];
 
-  if (selectedCell) {
-    document.getElementsByClassName("selected")[0].classList.remove("selected");
-  }
+  deselectCell();
 
   selectedCell = {
     col: col,
@@ -117,6 +115,7 @@ function handleCellClick(event) {
 
   document.getElementById("value-input").focus();
   event.target.classList.add("selected");
+  document.getElementById("format-controls").style.display = "inline";
 }
 
 function clearTable() {
@@ -146,7 +145,11 @@ function setOptions(options) {
   ).value = options.backgroundColor ? options.backgroundColor : "#FFFFFF";
 }
 
-function drawTable() {
+function deselectCell() {
+  Array.from(document.getElementsByClassName("selected")).forEach((cell) =>
+    cell.classList.remove("selected")
+  );
+
   selectedCell = null;
   document.getElementById("value-input").value = "";
   setOptions({
@@ -156,6 +159,11 @@ function drawTable() {
     fontColor: "#000000",
     backgroundColor: "#FFFFFF",
   });
+  document.getElementById("format-controls").style.display = "none";
+}
+
+function drawTable() {
+  deselectCell();
 
   const table = document.getElementById("spreadsheet");
 
