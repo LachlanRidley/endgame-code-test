@@ -69,6 +69,16 @@ document.getElementById("bold-button").onclick = function () {
   data[selectedCell.col][selectedCell.row].options.bold = true;
 };
 
+document.getElementById("font-color-picker").onchange = function () {
+  console.log(event);
+  const color = event.target.value;
+
+  if (!data[selectedCell.col][selectedCell.row].options) {
+    data[selectedCell.col][selectedCell.row].options = {};
+  }
+  data[selectedCell.col][selectedCell.row].options.fontColor = color;
+};
+
 setupRefreshButton();
 drawTable();
 
@@ -137,6 +147,9 @@ function drawTable() {
       if (cellData && cellData.options) {
         if (cellData.options.bold) {
           nextCell.classList.add("bold");
+        }
+        if (cellData.options.fontColor) {
+          nextCell.style.color = cellData.options.fontColor;
         }
       }
 
