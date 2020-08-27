@@ -14,6 +14,7 @@
 - [ ] replace prompt with input
   - [ ] focus input when selecting
   - [ ] remove prompt
+- [ ] make bold a toggle
 - [ ] add italics
 - [ ] add underlining
 - [ ] add auto refresh checkbox

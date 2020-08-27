@@ -55,6 +55,12 @@ setCellValue(7, 3, "=SUM(H3:G2)");
 setCellValue(6, 4, "=AVERAGE(H3:G2)");
 
 setCellValue(10, 1, 123, { bold: true });
+setCellValue(11, 1, 123, { italics: true });
+setCellValue(12, 1, 123, { underline: true });
+
+setCellValue(10, 2, 123, { fontColor: "#EF8A17" });
+setCellValue(11, 2, 123, { backgroundColor: "#008148" });
+setCellValue(12, 2, 123, { fontColor: "#C6C013", backgroundColor: "#008148" });
 
 setCellValue(99, 97, 4);
 setCellValue(99, 98, 5);
@@ -71,29 +77,29 @@ document.getElementById("value-input").onblur = function () {
 };
 
 document.getElementById("bold-button").onclick = function () {
-  if (!data[selectedCell.col][selectedCell.row].options) {
-    data[selectedCell.col][selectedCell.row].options = {};
-  }
+  ensureCellHasOptions(selectedCell.col, selectedCell.row);
   data[selectedCell.col][selectedCell.row].options.bold = true;
 };
 
 document.getElementById("font-color-picker").onchange = function () {
   const color = event.target.value;
 
-  if (!data[selectedCell.col][selectedCell.row].options) {
-    data[selectedCell.col][selectedCell.row].options = {};
-  }
+  ensureCellHasOptions(selectedCell.col, selectedCell.row);
   data[selectedCell.col][selectedCell.row].options.fontColor = color;
 };
 
 document.getElementById("background-color-picker").onchange = function () {
   const color = event.target.value;
 
+  ensureCellHasOptions(selectedCell.col, selectedCell.row);
+  data[selectedCell.col][selectedCell.row].options.backgroundColor = color;
+};
+
+function ensureCellHasOptions(col, row) {
   if (!data[selectedCell.col][selectedCell.row].options) {
     data[selectedCell.col][selectedCell.row].options = {};
   }
-  data[selectedCell.col][selectedCell.row].options.backgroundColor = color;
-};
+}
 
 setupRefreshButton();
 drawTable();
