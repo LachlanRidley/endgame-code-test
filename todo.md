@@ -9,5 +9,5 @@
     - [x] be able to calculate the formula and return the value (using getCellValue)
     - [x] find operator rather than just hoping it's at 3
     - [x] support for cell references with length > 2
-- [ ] add function support
+- [x] add function support
 - [ ] add support for formatting

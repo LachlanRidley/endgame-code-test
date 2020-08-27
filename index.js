@@ -1,12 +1,39 @@
 var width = 100;
 var height = 100;
 
-var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+var alphabet = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
 
 var data = []; // columns
 
 for (var col = 0; col < width; col++) {
-    data[col] = []
+  data[col] = [];
 }
 
 setCellValue(1, 1, 2);
@@ -27,248 +54,280 @@ setCellValue(6, 3, "=SUM(G2:H3)");
 setCellValue(7, 3, "=SUM(H3:G2)");
 setCellValue(6, 4, "=AVERAGE(H3:G2)");
 
+setCellValue(10, 1, 123, { bold: true });
+
 setCellValue(99, 97, 4);
 setCellValue(99, 98, 5);
-setCellValue(99, 99, '=CV98+CV99');
+setCellValue(99, 99, "=CV98+CV99");
 
 setupRefreshButton();
 drawTable();
 
 function setupRefreshButton() {
-    var refreshButton = document.getElementById("refresh-button");
+  var refreshButton = document.getElementById("refresh-button");
 
-    refreshButton.onclick = function() {
-        clearTable();
-        drawTable();
-    }
+  refreshButton.onclick = function () {
+    clearTable();
+    drawTable();
+  };
 }
 
 function clearTable() {
-    var table = document.getElementById("spreadsheet");
-    table.innerHTML = '';
+  var table = document.getElementById("spreadsheet");
+  table.innerHTML = "";
 }
 
 function handleCellClick(event) {
-    var cellValue = prompt("Enter cell value:");
-    setCellValue(event.target.dataset.col, event.target.dataset.row, cellValue);
-};
+  var cellValue = prompt("Enter cell value:");
+  setCellValue(event.target.dataset.col, event.target.dataset.row, cellValue);
+}
 
 function drawTable() {
-    var table = document.getElementById("spreadsheet");
+  var table = document.getElementById("spreadsheet");
 
-    // create column headers
-    var header = document.createElement("thead");
-    header.appendChild(document.createElement("th"))
+  // create column headers
+  var header = document.createElement("thead");
+  header.appendChild(document.createElement("th"));
+  for (var col = 0; col < width; col++) {
+    var headerCell = document.createElement("th");
+    headerCell.append(columnLabel(col));
+    header.appendChild(headerCell);
+  }
+  table.append(header);
+
+  // create table
+  for (var row = 0; row < height; row++) {
+    var nextRow = document.createElement("tr");
+
+    var rowLabel = document.createElement("th");
+    rowLabel.append(row + 1);
+    nextRow.appendChild(rowLabel);
+
     for (var col = 0; col < width; col++) {
-        var headerCell = document.createElement("th");
-        headerCell.append(columnLabel(col));
-        header.appendChild(headerCell);
-    }
-    table.append(header)
+      var nextCell = document.createElement("td");
+      nextCell.dataset.col = col;
+      nextCell.dataset.row = row;
+      nextCell.onclick = handleCellClick;
+      nextCell.append(getCellValue(col, row));
 
-    // create table
-    for (var row = 0; row < height; row++) {
-        var nextRow = document.createElement("tr");
+      const cellData = data[col][row];
 
-        var rowLabel = document.createElement("th");
-        rowLabel.append(row + 1);
-        nextRow.appendChild(rowLabel);
-
-        for (var col = 0; col < width; col++) {    
-            var nextCell = document.createElement("td");
-            nextCell.dataset.col = col;
-            nextCell.dataset.row = row;
-            nextCell.onclick = handleCellClick;
-            nextCell.append(getCellValue(col, row));
-            
-            nextRow.appendChild(nextCell);
+      if (cellData && cellData.options) {
+        if (cellData.options.bold) {
+          nextCell.classList.add("bold");
         }
+      }
 
-        table.appendChild(nextRow);
+      nextRow.appendChild(nextCell);
     }
+
+    table.appendChild(nextRow);
+  }
 }
 
 function cell(cellReference) {
-    const [col, row] = getCellCoordinates(cellReference);
+  const [col, row] = getCellCoordinates(cellReference);
 
-    return data[col][row];
+  return data[col][row];
 }
 
 function getCellCoordinates(cellReference) {
-    let index = 0;
+  let index = 0;
 
-    var letterComponent = '';
-    while (index < cellReference.length) {
-        if (cellReference.charAt(index).match(/^[a-zA-Z]+$/)) {
-            letterComponent += cellReference.charAt(index).toUpperCase();
-        } else {
-            break;
-        }
-
-        index++;
-    }
-
-    let col = 0;
-
-    if (letterComponent.length === 1) {
-        col = alphabet.findIndex(function(letter) {
-            return letter === letterComponent;
-        });
+  var letterComponent = "";
+  while (index < cellReference.length) {
+    if (cellReference.charAt(index).match(/^[a-zA-Z]+$/)) {
+      letterComponent += cellReference.charAt(index).toUpperCase();
     } else {
-        col = (alphabet.findIndex(function(letter) {
-            return letter === letterComponent[0];
-        }) + 1) * 26;
-        col += alphabet.findIndex(function(letter) {
-            return letter === letterComponent[1];
-        });
+      break;
     }
 
-    var numberComponent = cellReference.substring(index);
-    var row = parseInt(numberComponent) - 1;
+    index++;
+  }
 
-    return [col, row];
+  let col = 0;
+
+  if (letterComponent.length === 1) {
+    col = alphabet.findIndex(function (letter) {
+      return letter === letterComponent;
+    });
+  } else {
+    col =
+      (alphabet.findIndex(function (letter) {
+        return letter === letterComponent[0];
+      }) +
+        1) *
+      26;
+    col += alphabet.findIndex(function (letter) {
+      return letter === letterComponent[1];
+    });
+  }
+
+  var numberComponent = cellReference.substring(index);
+  var row = parseInt(numberComponent) - 1;
+
+  return [col, row];
 }
 
-function setCellValue(col, row, value) {
-    if (!data[col][row]) {
-        data[col][row] = {}
-    }
-    data[col][row].value = value;
+function setCellValue(col, row, value, options) {
+  if (!data[col][row]) {
+    data[col][row] = {};
+  }
+  data[col][row].value = value;
+
+  if (options) {
+    data[col][row].options = options;
+  }
 }
 
 function getCellValue(col, row) {
-    if (!data[col][row]) {
-        return '';
-    }
+  if (!data[col][row]) {
+    return "";
+  }
 
-    var cellValue = data[col][row].value.toString();
+  var cellValue = data[col][row].value.toString();
 
-    if (cellValue.charAt(0) === '=') {
-        cellValue = evaluateCell(cellValue.toString());   
-    }
+  if (cellValue.charAt(0) === "=") {
+    cellValue = evaluateCell(cellValue.toString());
+  }
 
-    return cellValue;
+  return cellValue;
 }
 
 function evaluateCell(cellValue) {
-    if (cellValue.toString().charAt(0) === '=') {
-        if (cellValue.indexOf('(') !== -1) {
-            return runFunction(cellValue);
-        } else {
-            return calculateFormula(cellValue);
-        }
+  if (cellValue.toString().charAt(0) === "=") {
+    if (cellValue.indexOf("(") !== -1) {
+      return runFunction(cellValue);
     } else {
-        return cellValue;
+      return calculateFormula(cellValue);
     }
+  } else {
+    return cellValue;
+  }
 }
 
 function runFunction(func) {
-    const functionName = func.substring(1, func.indexOf('('))
-    
-    if (functionName === "SUM") {
-        const range = func.substring(func.indexOf('(') + 1, func.indexOf(')'))
+  const functionName = func.substring(1, func.indexOf("("));
 
-        const cells = getCellsInRange(range);
-        return cells.slice(1).reduce(
-            (total, next) => total + parseFloat(evaluateCell(next.value)),
-            parseFloat(evaluateCell(cells[0].value))
-        );
-    } else if (functionName === "AVERAGE") {
-        const range = func.substring(func.indexOf('(') + 1, func.indexOf(')'))
+  if (functionName === "SUM") {
+    const range = func.substring(func.indexOf("(") + 1, func.indexOf(")"));
 
-        const cells = getCellsInRange(range);
-        return cells.slice(1).reduce(
-            (total, next) => total + parseFloat(evaluateCell(next.value)),
-            parseFloat(evaluateCell(cells[0].value))
-        ) / cells.length;
-    }
+    const cells = getCellsInRange(range);
+    return cells
+      .slice(1)
+      .reduce(
+        (total, next) => total + parseFloat(evaluateCell(next.value)),
+        parseFloat(evaluateCell(cells[0].value))
+      );
+  } else if (functionName === "AVERAGE") {
+    const range = func.substring(func.indexOf("(") + 1, func.indexOf(")"));
+
+    const cells = getCellsInRange(range);
+    return (
+      cells
+        .slice(1)
+        .reduce(
+          (total, next) => total + parseFloat(evaluateCell(next.value)),
+          parseFloat(evaluateCell(cells[0].value))
+        ) / cells.length
+    );
+  }
 }
 
 function getCellsInRange(range) {
-    const [leftRef, rightRef] = range.split(":");
-    const cells = [];
+  const [leftRef, rightRef] = range.split(":");
+  const cells = [];
 
-    let [startCol, startRow] = getCellCoordinates(leftRef);
-    let [endCol, endRow] = getCellCoordinates(rightRef);
+  let [startCol, startRow] = getCellCoordinates(leftRef);
+  let [endCol, endRow] = getCellCoordinates(rightRef);
 
-    for (let row = Math.min(startRow, endRow); row <= Math.max(startRow, endRow); row++) {
-        for (let col = Math.min(startCol, endCol); col <= Math.max(startCol, endCol); col++) {    
-            cells.push(data[col][row])
-        }
+  for (
+    let row = Math.min(startRow, endRow);
+    row <= Math.max(startRow, endRow);
+    row++
+  ) {
+    for (
+      let col = Math.min(startCol, endCol);
+      col <= Math.max(startCol, endCol);
+      col++
+    ) {
+      cells.push(data[col][row]);
     }
+  }
 
-    return cells;
+  return cells;
 }
 
 function calculateFormula(formula) {
-    const formulas = {
-        '+': function(left, right) {
-            return parseInt(left) + parseInt(right);
-        },
-        '-': function(left, right) {
-            return parseInt(left) - parseInt(right);
-        },
-        '*': function(left, right) {
-            return parseInt(left) * parseInt(right);
-        },
-        '/': function(left, right) {
-            return parseInt(left) / parseInt(right);
-        }
-        ,
-        '%': function(left, right) {
-            return parseInt(left) % parseInt(right);
-        }
+  const formulas = {
+    "+": function (left, right) {
+      return parseInt(left) + parseInt(right);
+    },
+    "-": function (left, right) {
+      return parseInt(left) - parseInt(right);
+    },
+    "*": function (left, right) {
+      return parseInt(left) * parseInt(right);
+    },
+    "/": function (left, right) {
+      return parseInt(left) / parseInt(right);
+    },
+    "%": function (left, right) {
+      return parseInt(left) % parseInt(right);
+    },
+  };
+
+  var result;
+
+  var index = 1;
+  var leftCellReference = "";
+  while (index < formula.length) {
+    if (formula.charAt(index).match(/^[0-9a-zA-Z]+$/)) {
+      leftCellReference += formula.charAt(index).toUpperCase();
+    } else {
+      break;
     }
 
-    var result;
-
-    var index = 1;
-    var leftCellReference = '';
-    while (index < formula.length) {
-        if (formula.charAt(index).match(/^[0-9a-zA-Z]+$/)) {
-            leftCellReference += formula.charAt(index).toUpperCase();
-        } else {
-            break;
-        }
-
-        index++;
-    }
-
-    var operator = formula.charAt(index);
-    
     index++;
-    
-    var rightCellReference = '';
-    while (index < formula.length) {
-        if (formula.charAt(index).match(/^[0-9a-zA-Z]+$/)) {
-            rightCellReference += formula.charAt(index).toUpperCase();
-        } else {
-            break;
-        }
+  }
 
-        index++;
+  var operator = formula.charAt(index);
+
+  index++;
+
+  var rightCellReference = "";
+  while (index < formula.length) {
+    if (formula.charAt(index).match(/^[0-9a-zA-Z]+$/)) {
+      rightCellReference += formula.charAt(index).toUpperCase();
+    } else {
+      break;
     }
 
-    if (operator in formulas) {
-        var calculatedLeft = evaluateCell(cell(leftCellReference).value.toString());
-        var calculatedRight = evaluateCell(cell(rightCellReference).value.toString());
+    index++;
+  }
 
-        result = formulas[operator](calculatedLeft, calculatedRight);
-    }
+  if (operator in formulas) {
+    var calculatedLeft = evaluateCell(cell(leftCellReference).value.toString());
+    var calculatedRight = evaluateCell(
+      cell(rightCellReference).value.toString()
+    );
 
-    return result;
+    result = formulas[operator](calculatedLeft, calculatedRight);
+  }
+
+  return result;
 }
 
 function columnLabel(count) {
-    var firstLetter = '';
-    var firstLetterIndex = Math.floor(count / 26);
+  var firstLetter = "";
+  var firstLetterIndex = Math.floor(count / 26);
 
-    if (firstLetterIndex > 0) {
-        firstLetter = alphabet[firstLetterIndex - 1];
-    }
+  if (firstLetterIndex > 0) {
+    firstLetter = alphabet[firstLetterIndex - 1];
+  }
 
-    var secondLetterIndex = count % alphabet.length;
-    var secondLetter = alphabet[secondLetterIndex]
+  var secondLetterIndex = count % alphabet.length;
+  var secondLetter = alphabet[secondLetterIndex];
 
-    return firstLetter + secondLetter;
+  return firstLetter + secondLetter;
 }
