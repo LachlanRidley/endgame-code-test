@@ -30,9 +30,9 @@ const alphabet = [
   "Z",
 ];
 
-var data = []; // columns
+let data = []; // columns
 
-for (var col = 0; col < width; col++) {
+for (let col = 0; col < width; col++) {
   data[col] = [];
 }
 
@@ -85,9 +85,7 @@ setupRefreshButton();
 drawTable();
 
 function setupRefreshButton() {
-  var refreshButton = document.getElementById("refresh-button");
-
-  refreshButton.onclick = function () {
+  document.getElementById("refresh-button").onclick = function () {
     clearTable();
     drawTable();
   };
@@ -119,8 +117,7 @@ function handleCellClick(event) {
 }
 
 function clearTable() {
-  var table = document.getElementById("spreadsheet");
-  table.innerHTML = "";
+  document.getElementById("spreadsheet").innerHTML = "";
 }
 
 function setOptions(options) {
@@ -170,23 +167,23 @@ function drawTable() {
   // create column headers
   const header = document.createElement("thead");
   header.appendChild(document.createElement("th"));
-  for (var col = 0; col < width; col++) {
-    var headerCell = document.createElement("th");
+  for (let col = 0; col < width; col++) {
+    const headerCell = document.createElement("th");
     headerCell.append(columnLabel(col));
     header.appendChild(headerCell);
   }
   table.append(header);
 
   // create table
-  for (var row = 0; row < height; row++) {
-    var nextRow = document.createElement("tr");
+  for (let row = 0; row < height; row++) {
+    const nextRow = document.createElement("tr");
 
-    var rowLabel = document.createElement("th");
+    const rowLabel = document.createElement("th");
     rowLabel.append(row + 1);
     nextRow.appendChild(rowLabel);
 
-    for (var col = 0; col < width; col++) {
-      var nextCell = document.createElement("td");
+    for (let col = 0; col < width; col++) {
+      const nextCell = document.createElement("td");
       nextCell.dataset.col = col;
       nextCell.dataset.row = row;
       nextCell.onclick = handleCellClick;
@@ -228,7 +225,7 @@ function cell(cellReference) {
 function getCellCoordinates(cellReference) {
   let index = 0;
 
-  var letterComponent = "";
+  let letterComponent = "";
   while (index < cellReference.length) {
     if (cellReference.charAt(index).match(/^[a-zA-Z]+$/)) {
       letterComponent += cellReference.charAt(index).toUpperCase();
@@ -257,8 +254,8 @@ function getCellCoordinates(cellReference) {
     });
   }
 
-  var numberComponent = cellReference.substring(index);
-  var row = parseInt(numberComponent) - 1;
+  const numberComponent = cellReference.substring(index);
+  const row = parseInt(numberComponent) - 1;
 
   return [col, row];
 }
@@ -279,7 +276,7 @@ function getCellValue(col, row) {
     return "";
   }
 
-  var cellValue = data[col][row].value.toString();
+  let cellValue = data[col][row].value.toString();
 
   if (cellValue.charAt(0) === "=") {
     cellValue = evaluateCell(cellValue.toString());
@@ -371,10 +368,10 @@ function calculateFormula(formula) {
     },
   };
 
-  var result;
+  let result;
 
-  var index = 1;
-  var leftCellReference = "";
+  let index = 1;
+  let leftCellReference = "";
   while (index < formula.length) {
     if (formula.charAt(index).match(/^[0-9a-zA-Z]+$/)) {
       leftCellReference += formula.charAt(index).toUpperCase();
@@ -385,11 +382,11 @@ function calculateFormula(formula) {
     index++;
   }
 
-  var operator = formula.charAt(index);
+  const operator = formula.charAt(index);
 
   index++;
 
-  var rightCellReference = "";
+  let rightCellReference = "";
   while (index < formula.length) {
     if (formula.charAt(index).match(/^[0-9a-zA-Z]+$/)) {
       rightCellReference += formula.charAt(index).toUpperCase();
@@ -401,8 +398,10 @@ function calculateFormula(formula) {
   }
 
   if (operator in formulas) {
-    var calculatedLeft = evaluateCell(cell(leftCellReference).value.toString());
-    var calculatedRight = evaluateCell(
+    const calculatedLeft = evaluateCell(
+      cell(leftCellReference).value.toString()
+    );
+    const calculatedRight = evaluateCell(
       cell(rightCellReference).value.toString()
     );
 
@@ -413,15 +412,15 @@ function calculateFormula(formula) {
 }
 
 function columnLabel(count) {
-  var firstLetter = "";
-  var firstLetterIndex = Math.floor(count / 26);
+  let firstLetter = "";
+  const firstLetterIndex = Math.floor(count / 26);
 
   if (firstLetterIndex > 0) {
     firstLetter = alphabet[firstLetterIndex - 1];
   }
 
-  var secondLetterIndex = count % alphabet.length;
-  var secondLetter = alphabet[secondLetterIndex];
+  const secondLetterIndex = count % alphabet.length;
+  const secondLetter = alphabet[secondLetterIndex];
 
   return firstLetter + secondLetter;
 }
