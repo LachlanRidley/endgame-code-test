@@ -70,13 +70,21 @@ document.getElementById("bold-button").onclick = function () {
 };
 
 document.getElementById("font-color-picker").onchange = function () {
-  console.log(event);
   const color = event.target.value;
 
   if (!data[selectedCell.col][selectedCell.row].options) {
     data[selectedCell.col][selectedCell.row].options = {};
   }
   data[selectedCell.col][selectedCell.row].options.fontColor = color;
+};
+
+document.getElementById("background-color-picker").onchange = function () {
+  const color = event.target.value;
+
+  if (!data[selectedCell.col][selectedCell.row].options) {
+    data[selectedCell.col][selectedCell.row].options = {};
+  }
+  data[selectedCell.col][selectedCell.row].options.backgroundColor = color;
 };
 
 setupRefreshButton();
@@ -150,6 +158,9 @@ function drawTable() {
         }
         if (cellData.options.fontColor) {
           nextCell.style.color = cellData.options.fontColor;
+        }
+        if (cellData.options.backgroundColor) {
+          nextCell.style.backgroundColor = cellData.options.backgroundColor;
         }
       }
 
