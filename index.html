@@ -1,14 +1,18 @@
 <html>
-    <head>
-        <title>Spreadsheet</title>
-        <link href="style.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="toolbar">
-            <button id="refresh-button">Refresh</button>
-        </div>
+  <head>
+    <title>Spreadsheet</title>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="toolbar">
+      <button id="refresh-button">Refresh</button>
+      <button id="bold-button">Bold</button>
 
-        <table id="spreadsheet"></table>
-        <script type="text/javascript" src="index.js"></script>
-    </body>
+      <label for="fontColor">Font colour: </label>
+      <input name="fontColor" type="color" id="font-color-picker" />
+    </div>
+
+    <table id="spreadsheet"></table>
+    <script type="text/javascript" src="index.js"></script>
+  </body>
 </html>

@@ -60,6 +60,15 @@ setCellValue(99, 97, 4);
 setCellValue(99, 98, 5);
 setCellValue(99, 99, "=CV98+CV99");
 
+let selectedCell = null;
+
+document.getElementById("bold-button").onclick = function () {
+  if (!data[selectedCell.col][selectedCell.row].options) {
+    data[selectedCell.col][selectedCell.row].options = {};
+  }
+  data[selectedCell.col][selectedCell.row].options.bold = true;
+};
+
 setupRefreshButton();
 drawTable();
 
@@ -72,14 +81,27 @@ function setupRefreshButton() {
   };
 }
 
+function handleCellClick(event) {
+  const col = event.target.dataset.col;
+  const row = event.target.dataset.row;
+  const cell = data[col][row];
+  const defaultValue = cell ? cell.value : "";
+
+  const cellValue = prompt("Enter cell value:", defaultValue);
+
+  setCellValue(col, row, cellValue);
+
+  selectedCell = {
+    col: col,
+    row: row,
+  };
+
+  event.target.classList.add("selected");
+}
+
 function clearTable() {
   var table = document.getElementById("spreadsheet");
   table.innerHTML = "";
-}
-
-function handleCellClick(event) {
-  var cellValue = prompt("Enter cell value:");
-  setCellValue(event.target.dataset.col, event.target.dataset.row, cellValue);
 }
 
 function drawTable() {

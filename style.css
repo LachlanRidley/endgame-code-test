@@ -14,6 +14,11 @@ body {
   border: 1px solid gray;
 }
 
+#spreadsheet td.selected {
+  background-color: #899ce3;
+  border: 1px solid #2f4ab2;
+}
+
 #spreadsheet td.bold {
   font-weight: bold;
 }
