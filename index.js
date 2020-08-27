@@ -36,37 +36,6 @@ for (var col = 0; col < width; col++) {
   data[col] = [];
 }
 
-setCellValue(1, 1, 2);
-setCellValue(2, 1, 3);
-setCellValue(3, 1, "=B2+C2");
-setCellValue(3, 2, "=C2+D2");
-setCellValue(3, 3, "=B2-C2");
-setCellValue(3, 4, "=B2*C2");
-setCellValue(3, 5, "=B2/C2");
-setCellValue(3, 6, "=C2%B2");
-setCellValue(3, 7, "=SUM(D2:D7)");
-
-setCellValue(6, 1, 1);
-setCellValue(7, 1, 2);
-setCellValue(6, 2, 3);
-setCellValue(7, 2, 4);
-setCellValue(6, 3, "=SUM(G2:H3)");
-setCellValue(7, 3, "=SUM(H3:G2)");
-setCellValue(6, 4, "=AVERAGE(H3:G2)");
-
-setCellValue(10, 1, 123, { bold: true });
-setCellValue(11, 1, 123, { italics: true });
-setCellValue(12, 1, 123, { underline: true });
-setCellValue(12, 0, 123, { bold: true, italics: true, underline: true });
-
-setCellValue(10, 2, 123, { fontColor: "#EF8A17" });
-setCellValue(11, 2, 123, { backgroundColor: "#008148" });
-setCellValue(12, 2, 123, { fontColor: "#C6C013", backgroundColor: "#008148" });
-
-setCellValue(99, 97, 4);
-setCellValue(99, 98, 5);
-setCellValue(99, 99, "=CV98+CV99");
-
 let selectedCell = null;
 
 document.getElementById("value-input").onblur = function () {
@@ -78,6 +47,18 @@ document.getElementById("value-input").onblur = function () {
 document.getElementById("bold-check").onchange = function () {
   ensureCellHasOptions(selectedCell.col, selectedCell.row);
   data[selectedCell.col][selectedCell.row].options.bold = event.target.checked;
+};
+
+document.getElementById("italics-check").onchange = function () {
+  ensureCellHasOptions(selectedCell.col, selectedCell.row);
+  data[selectedCell.col][selectedCell.row].options.italics =
+    event.target.checked;
+};
+
+document.getElementById("underline-check").onchange = function () {
+  ensureCellHasOptions(selectedCell.col, selectedCell.row);
+  data[selectedCell.col][selectedCell.row].options.underline =
+    event.target.checked;
 };
 
 document.getElementById("font-color-picker").onchange = function () {
@@ -130,28 +111,7 @@ function handleCellClick(event) {
     document.getElementById("value-input").value = cell.value;
 
     if (cell.options) {
-      document.getElementById("bold-check").checked = cell.options.bold
-        ? cell.options.bold
-        : false;
-
-      document.getElementById("italics-check").checked = cell.options.italics
-        ? cell.options.italics
-        : false;
-
-      document.getElementById("underline-check").checked = cell.options
-        .underline
-        ? cell.options.underline
-        : false;
-
-      document.getElementById("font-color-picker").value = cell.options
-        .fontColor
-        ? cell.options.fontColor
-        : "#000000";
-
-      document.getElementById("background-color-picker").value = cell.options
-        .backgroundColor
-        ? cell.options.backgroundColor
-        : "#FFFFFF";
+      setOptions(cell.options);
     }
   }
 
@@ -164,8 +124,38 @@ function clearTable() {
   table.innerHTML = "";
 }
 
+function setOptions(options) {
+  document.getElementById("bold-check").checked = options.bold
+    ? options.bold
+    : false;
+
+  document.getElementById("italics-check").checked = options.italics
+    ? options.italics
+    : false;
+
+  document.getElementById("underline-check").checked = options.underline
+    ? options.underline
+    : false;
+
+  document.getElementById("font-color-picker").value = options.fontColor
+    ? options.fontColor
+    : "#000000";
+
+  document.getElementById(
+    "background-color-picker"
+  ).value = options.backgroundColor ? options.backgroundColor : "#FFFFFF";
+}
+
 function drawTable() {
   selectedCell = null;
+  document.getElementById("value-input").value = "";
+  setOptions({
+    bold: false,
+    italics: false,
+    underline: false,
+    fontColor: "#000000",
+    backgroundColor: "#FFFFFF",
+  });
 
   const table = document.getElementById("spreadsheet");
 
@@ -426,4 +416,40 @@ function columnLabel(count) {
   var secondLetter = alphabet[secondLetterIndex];
 
   return firstLetter + secondLetter;
+}
+
+function addTestData() {
+  setCellValue(1, 1, 2);
+  setCellValue(2, 1, 3);
+  setCellValue(3, 1, "=B2+C2");
+  setCellValue(3, 2, "=C2+D2");
+  setCellValue(3, 3, "=B2-C2");
+  setCellValue(3, 4, "=B2*C2");
+  setCellValue(3, 5, "=B2/C2");
+  setCellValue(3, 6, "=C2%B2");
+  setCellValue(3, 7, "=SUM(D2:D7)");
+
+  setCellValue(6, 1, 1);
+  setCellValue(7, 1, 2);
+  setCellValue(6, 2, 3);
+  setCellValue(7, 2, 4);
+  setCellValue(6, 3, "=SUM(G2:H3)");
+  setCellValue(7, 3, "=SUM(H3:G2)");
+  setCellValue(6, 4, "=AVERAGE(H3:G2)");
+
+  setCellValue(10, 1, 123, { bold: true });
+  setCellValue(11, 1, 123, { italics: true });
+  setCellValue(12, 1, 123, { underline: true });
+  setCellValue(12, 0, 123, { bold: true, italics: true, underline: true });
+
+  setCellValue(10, 2, 123, { fontColor: "#EF8A17" });
+  setCellValue(11, 2, 123, { backgroundColor: "#008148" });
+  setCellValue(12, 2, 123, {
+    fontColor: "#C6C013",
+    backgroundColor: "#008148",
+  });
+
+  setCellValue(99, 97, 4);
+  setCellValue(99, 98, 5);
+  setCellValue(99, 99, "=CV98+CV99");
 }

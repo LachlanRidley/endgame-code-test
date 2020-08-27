@@ -8,20 +8,22 @@
       <input type="text" id="value-input" />
       <button id="refresh-button">Refresh</button>
 
-      <input type="checkbox" id="bold-check">Bold</input>
-      <input type="checkbox" id="italics-check">Italics</input>
-      <input type="checkbox" id="underline-check">Underline</input>
+      <span id="format-controls">
+        <label><input type="checkbox" id="bold-check" />Bold</label>
+        <label><input type="checkbox" id="italics-check" />Italics</label>
+        <label> <input type="checkbox" id="underline-check" />Underline</label>
 
-      <label for="fontColor">Font colour: </label>
-      <input name="fontColor" type="color" id="font-color-picker" />
+        <label for="fontColor">Font colour: </label>
+        <input name="fontColor" type="color" id="font-color-picker" />
 
-      <label for="backgroundColor">Background colour: </label>
-      <input
-        name="backgroundColor"
-        type="color"
-        value="#FFFFFF"
-        id="background-color-picker"
-      />
+        <label for="backgroundColor">Background colour: </label>
+        <input
+          name="backgroundColor"
+          type="color"
+          value="#FFFFFF"
+          id="background-color-picker"
+        />
+      </span>
     </div>
 
     <table id="spreadsheet"></table>
