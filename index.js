@@ -299,7 +299,7 @@ function evaluateCell(cellValue) {
 }
 
 function runFunction(func) {
-  const functionName = func.substring(1, func.indexOf("("));
+  const functionName = func.substring(1, func.indexOf("(")).toUpperCase();
 
   if (functionName === "SUM") {
     const range = func.substring(func.indexOf("(") + 1, func.indexOf(")"));
