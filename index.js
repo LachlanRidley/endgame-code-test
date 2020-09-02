@@ -1,4 +1,4 @@
-const width = 100;
+const width = 800;
 const height = 100;
 
 const alphabet = [
@@ -55,7 +55,7 @@ function drawTable() {
   header.appendChild(document.createElement("th"));
   for (let col = 0; col < width; col++) {
     const headerCell = document.createElement("th");
-    headerCell.append(columnLabel(col));
+    headerCell.append(columnLabel(col + 1));
     header.appendChild(headerCell);
   }
   table.append(header);
@@ -233,20 +233,12 @@ function getCellCoordinates(cellReference) {
 
   let col = 0;
 
-  if (letterComponent.length === 1) {
-    col = alphabet.findIndex(function (letter) {
-      return letter === letterComponent;
-    });
-  } else {
-    col =
-      (alphabet.findIndex(function (letter) {
-        return letter === letterComponent[0];
-      }) +
-        1) *
-      26;
-    col += alphabet.findIndex(function (letter) {
-      return letter === letterComponent[1];
-    });
+  for (let i = 0; i < letterComponent.length; i++) {
+    const power = letterComponent.length - i - 1;
+    col +=
+      (alphabet.findIndex((letter) => letter === letterComponent[i]) +
+        (power > 0 ? 1 : 0)) *
+      Math.pow(alphabet.length, power);
   }
 
   const numberComponent = cellReference.substring(index);
@@ -413,17 +405,16 @@ function calculateFormula(formula) {
 }
 
 function columnLabel(count) {
-  let firstLetter = "";
-  const firstLetterIndex = Math.floor(count / 26);
+  const radix = alphabet.length;
+  let letters = "";
 
-  if (firstLetterIndex > 0) {
-    firstLetter = alphabet[firstLetterIndex - 1];
+  while (count > 0) {
+    const temp = (count - 1) % radix;
+    letters = alphabet[temp] + letters;
+    count = (count - temp - 1) / radix;
   }
 
-  const secondLetterIndex = count % alphabet.length;
-  const secondLetter = alphabet[secondLetterIndex];
-
-  return firstLetter + secondLetter;
+  return letters;
 }
 
 function addTestData() {
